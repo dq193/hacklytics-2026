@@ -25,3 +25,19 @@ class UserResponse(UserBase):
 
     class Config:
         from_attributes = True
+
+class PlanResponse(BaseModel):
+    Health_Insurance_Provider: Optional[str] = None
+    Health_Insurance_Plan: Optional[str] = None
+    Plan_Marketing_Name: Optional[str] = None
+    County: Optional[str] = None
+    Metal: Optional[str] = None
+    Premium_21_Year_Old: Optional[str] = None
+    Deductible_21_Year_Old: Optional[str] = None
+    Copay_Primary_Care: Optional[str] = None
+    Copay_Specialist: Optional[str] = None
+    Copay_Emergency_Room: Optional[str] = None
+    Subsidy_Details: Optional[str] = None
+
+    class Config:
+        from_attributes = True

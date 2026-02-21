@@ -123,3 +123,25 @@ def update_user(user_id: int, full_name: str = None, income_profile: float = Non
     if row:
         return User(row)
     return None
+
+class Plan:
+    def __init__(self, row: sqlite3.Row):
+        self.Health_Insurance_Provider = row['Health_Insurance_Provider']
+        self.Health_Insurance_Plan = row['Health_Insurance_Plan']
+        self.Plan_Marketing_Name = row['Plan_Marketing_Name']
+        self.County = row['County']
+        self.Metal = row['Metal']
+        self.Premium_21_Year_Old = row['Premium_21_Year_Old']
+        self.Deductible_21_Year_Old = row['Deductible_21_Year_Old']
+        self.Copay_Primary_Care = row['Copay_Primary_Care']
+        self.Copay_Specialist = row['Copay_Specialist']
+        self.Copay_Emergency_Room = row['Copay_Emergency_Room']
+        self.Subsidy_Details = row['Subsidy_Details']
+
+def get_plans_by_county(county: str) -> List[Plan]:
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM health_insurance_plans WHERE County = ?", (county,))
+    rows = cursor.fetchall()
+    conn.close()
+    return [Plan(row) for row in rows]

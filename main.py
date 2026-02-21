@@ -6,8 +6,8 @@ from dotenv import load_dotenv
 # Load environment variables
 load_dotenv()
 
-from database import create_tables, create_user, get_all_users, update_user, get_user_by_email, User as DBUser
-from schemas import UserCreate, UserResponse, UserUpdate
+from database import create_tables, create_user, get_all_users, update_user, get_user_by_email, get_plans_by_county, User as DBUser
+from schemas import UserCreate, UserResponse, UserUpdate, PlanResponse
 
 app = FastAPI(title="Health Insurance API", version="1.0.0")
 
@@ -131,3 +131,22 @@ if __name__ == "__main__":
     port = int(os.getenv("PORT", "8000"))
     config.bind = [f"{host}:{port}"]
     asyncio.run(serve(app, config))
+
+@app.get("/plans/{county}", response_model=List[PlanResponse])
+async def get_plans(county: str):
+    plans = get_plans_by_county(county)
+    return [
+        PlanResponse(
+            Health_Insurance_Provider=plan.Health_Insurance_Provider,
+            Health_Insurance_Plan=plan.Health_Insurance_Plan,
+            Plan_Marketing_Name=plan.Plan_Marketing_Name,
+            County=plan.County,
+            Metal=plan.Metal,
+            Premium_21_Year_Old=plan.Premium_21_Year_Old,
+            Deductible_21_Year_Old=plan.Deductible_21_Year_Old,
+            Copay_Primary_Care=plan.Copay_Primary_Care,
+            Copay_Specialist=plan.Copay_Specialist,
+            Copay_Emergency_Room=plan.Copay_Emergency_Room,
+            Subsidy_Details=plan.Subsidy_Details
+        ) for plan in plans
+    ]
