@@ -7,6 +7,7 @@ class UserBase(BaseModel):
     email: EmailStr
     income_profile: float
     coverage: str
+    county: str
 
 class UserCreate(UserBase):
     pass
@@ -15,6 +16,7 @@ class UserUpdate(BaseModel):
     full_name: Optional[str] = None
     income_profile: Optional[float] = None
     coverage: Optional[str] = None
+    county: Optional[str] = None
 
 class UserResponse(UserBase):
     id: int

@@ -25,6 +25,7 @@ def create_tables():
         email TEXT UNIQUE NOT NULL,
         income_profile REAL NOT NULL,
         coverage TEXT NOT NULL,
+        county TEXT NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
@@ -40,6 +41,7 @@ class User:
         self.email = row['email']
         self.income_profile = row['income_profile']
         self.coverage = row['coverage']
+        self.county = row['county']
         self.created_at = row['created_at']
         self.updated_at = row['updated_at']
 
@@ -54,14 +56,14 @@ def get_user_by_email(email: str) -> Optional[User]:
         return User(row)
     return None
 
-def create_user(full_name: str, email: str, income_profile: float, coverage: str) -> User:
+def create_user(full_name: str, email: str, income_profile: float, coverage: str, county: str) -> User:
     conn = get_db_connection()
     cursor = conn.cursor()
     
     cursor.execute("""
-    INSERT INTO users (full_name, email, income_profile, coverage)
-    VALUES (?, ?, ?, ?)
-    """, (full_name, email, income_profile, coverage))
+    INSERT INTO users (full_name, email, income_profile, coverage, county)
+    VALUES (?, ?, ?, ?, ?)
+    """, (full_name, email, income_profile, coverage, county))
     
     conn.commit()
     user_id = cursor.lastrowid
@@ -85,7 +87,7 @@ def get_all_users() -> List[User]:
     
     return [User(row) for row in rows]
 
-def update_user(user_id: int, full_name: str = None, income_profile: float = None, coverage: str = None) -> Optional[User]:
+def update_user(user_id: int, full_name: str = None, income_profile: float = None, coverage: str = None, county: str = None) -> Optional[User]:
     conn = get_db_connection()
     cursor = conn.cursor()
     
@@ -101,6 +103,9 @@ def update_user(user_id: int, full_name: str = None, income_profile: float = Non
     if coverage is not None:
         updates.append("coverage = ?")
         params.append(coverage)
+    if county is not None:
+        updates.append("county = ?")
+        params.append(county)
     
     if updates:
         updates.append("updated_at = CURRENT_TIMESTAMP")

@@ -39,7 +39,8 @@ async def register_user(user: UserCreate):
         full_name=user.full_name,
         email=user.email,
         income_profile=user.income_profile,
-        coverage=user.coverage
+        coverage=user.coverage,
+        county=user.county
     )
     
     return UserResponse(
@@ -48,6 +49,7 @@ async def register_user(user: UserCreate):
         email=db_user.email,
         income_profile=db_user.income_profile,
         coverage=db_user.coverage,
+        county=db_user.county,
         created_at=str(db_user.created_at),
         updated_at=str(db_user.updated_at)
     )
@@ -62,6 +64,7 @@ async def get_all_users_endpoint():
             email=user.email,
             income_profile=user.income_profile,
             coverage=user.coverage,
+            county=user.county,
             created_at=str(user.created_at),
             updated_at=str(user.updated_at)
         ) for user in users
@@ -81,6 +84,7 @@ async def get_user(email: str):
         email=user.email,
         income_profile=user.income_profile,
         coverage=user.coverage,
+        county=user.county,
         created_at=str(user.created_at),
         updated_at=str(user.updated_at)
     )
@@ -101,7 +105,8 @@ async def update_user_endpoint(
         user_id=current_user.id,
         full_name=user_update.full_name,
         income_profile=user_update.income_profile,
-        coverage=user_update.coverage
+        coverage=user_update.coverage,
+        county=user_update.county
     )
     
     return UserResponse(
@@ -110,6 +115,7 @@ async def update_user_endpoint(
         email=updated_user.email,
         income_profile=updated_user.income_profile,
         coverage=updated_user.coverage,
+        county=updated_user.county,
         created_at=str(updated_user.created_at),
         updated_at=str(updated_user.updated_at)
     )
