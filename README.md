@@ -11,7 +11,7 @@ pip install -r requirements.txt
 ## Running the application
 
 ```bash
-uvicorn main:app --reload
+hypercorn main:app --reload
 ```
 
 Or run directly:
